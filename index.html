@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <!-- <link rel="stylesheet" href="normalize.css"> -->
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
+  <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.8.1/css/all.css">
+  <!-- <link rel="stylesheet" href="./css/style.css"> -->
+  <title>CRUD FIREBASE</title>
+</head>
+<body>
+  <nav class="navbar bg-success">
+    <ul class="list-inline">
+      <li class="list-inline-item">
+        <h3 class="text-white">FIREBASE-CRUD</h3>
+      </li>
+    </ul>
+  </nav>
+  <div class="container">
+    <div class="row mt-4">
+      <div class="col lg-6">
+        <div class="card">
+          <div class="card-body">
+            <div class="card-title">
+              <h5>inserte tarea</h5>
+            </div>
+            <form>
+            <input type="text" id="name" placeholder="inserte nombre" class="form-control">
+            <br>
+            <input type="text" id="last" placeholder="inserte apellido" class="form-control">
+            <br>
+            <input type="number" id="age" placeholder="inserte edad" class="form-control">
+              <br>
+            </form>
+            <button class="btn btn-success" onclick="agregar()" id="btn"><i class="fas fa-plus"></i> agregar</button>
+          </div>
+        </div>
+      </div>
+      <div class="col lg-6">
+        <table class="table table-bordered text-center">
+          <thead class="thead-dark">
+            <tr>
+              <th>ID</th>
+              <th>Name</th>
+              <th>LastName</th>
+              <th>age</th>
+              <th>options</th>
+            </tr>
+          </thead>
+          <tbody id="loadTask">
+            <!-- <tr>
+              <td>genaro</td>
+              <td>pretill</td>
+            </tr> -->
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>  
+
+<!-- modal actualizar -->
+<div class="modal fade modal-update">
+  <div class="modal-dialog modal-lg">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title">Actualizar</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <form>
+            <input type="text" id="updateName" placeholder="inserte nombre" class="form-control">
+            <br>
+            <input type="text" id="updateLast" placeholder="inserte apellido" class="form-control">
+            <br>
+            <input type="number" id="updateAge" placeholder="inserte edad" class="form-control">
+              <br>
+            </form>
+      </div>
+      <div id="notification-update"></div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+        <button type="button" id="guardar" class="btn btn-success">guardar</button>
+      </div>
+    </div>
+  </div>
+</div>
+<!-- modal para eliminar -->
+<div class="modal fade modal-delete">
+    <div class="modal-dialog modal-lg">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title">eliminar</h5>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body" id="modal-delete">
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+          <button type="button" id="btn-delete" class="btn btn-success">confirmar</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+
+  <!-- sctript -->
+
+  <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
+  <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>  
+<script src="https://www.gstatic.com/firebasejs/5.9.1/firebase.js"></script>
+<script src="script.js"></script>
+</body>
+</html>
