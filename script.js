@@ -14,60 +14,86 @@ var db = firebase.firestore();
 const d = document,
       c = console.log,
       age = d.getElementById('age'),
+      ageIgv = d.getElementById('ageIgv'),
       updateAge = d.getElementById('updateAge'),
       name = d.getElementById('name'),
       updateName = d.getElementById('updateName'),
+      last = d.getElementById('last'),
       updateLast = d.getElementById('updateLast'),
       loadTask = d.getElementById('loadTask'),
       btn = d.getElementById('btn'),
       guardar = d.getElementById('guardar'),
+      notificationAdd = d.getElementById('notificationAdd'),
       modalDelete = d.getElementById('modal-delete'),
       btnDelete = d.getElementById('btn-delete'),
-      notificationUpdate = d.getElementById('notification-update')
-  
+      notificationUpdate = d.getElementById('notification-update'),
+      val = d.querySelector('input')
+
+
+
+
+
+
+
+
 
 
 // agregar un nuevo documento
 function agregar(){
-  db.collection("clients").add({
-      name: name.value,
-      last: last.value,
-      age:age.value
-  })
-  .then(docRef = () =>  {
-      console.log("documento escrito con ID: ", docRef.id);
-      name.value = ''
-      last.value=''
-      age.value =''
-  })
-  .catch(function(error) {
-      console.error("Error adding document: ", error);
-  });
+  // if(Number(age.value)){
+  //   ageIgv.value = (Number(age.value /100)*18) + Number(age.value)
+  //   ageIgv.innerHTML = ageIgv.value
+  // }
+  if(name.value == '' || name.value == '' || age.value == ''){
+    notificationAdd.innerHTML = `
+    <div class="alert alert-danger" role="alert">
+    Completa los espacios en blanco
+    </div>`
+    setTimeout(function(){
+      notificationAdd.innerHTML = ''
+    },1000)
+  }else{
+    console.log('agregado');
+    db.collection("clients").add({
+        name: name.value,
+        last: last.value,
+        age:age.value
+    })
+    .then(function(docRef){
+        console.log("documento escrito con ID: ", docRef.id);
+        name.value = ''
+        last.value=''
+        age.value =''
+    })
+    .catch(function(error) {
+        console.error("Error adding document: ", error);
+    });
+  }
 }
 
 
 
-db.collection("clients").onSnapshot((query) => {
-  loadTask.innerHTML = ''
-  query.forEach((doc) => {
-      const data = doc.data()
-      loadTask.innerHTML += `<tr>
-      <td>${doc.id}</td>
-      <td>${data.name}</td>
-      <td>${data.last}</td>
-      <td>${data.age}</td>
-      <td><button onclick="editUser('${doc.id}','${data.name}','${data.last}','${data.age}')" data-toggle="modal" data-target=".modal-update"><i class="fas fa-edit"></i></button>
-      <button onclick="deleteUser('${doc.id}','${data.name}')" data-toggle="modal" data-target=".modal-delete"><i class="fas fa-trash-alt"></i></button></td>
-      </tr>`
-      // console.log(`${doc.id} => ${doc.data().name}`);
-  });
-});
+// db.collection("clients").onSnapshot((query) => {
+//   loadTask.innerHTML = ''
+//   query.forEach((doc) => {
+//       const data = doc.data()
+//       loadTask.innerHTML += `<tr>
+//       <td>${doc.id}</td>
+//       <td>${data.name}</td>
+//       <td>${data.last}</td>
+//       <td>${data.age}</td>
+//       <td><button onclick="editUser('${doc.id}','${data.name}','${data.last}','${data.age}')" data-toggle="modal" data-target=".modal-update"><i class="fas fa-edit"></i></button>
+//       <button onclick="deleteUser('${doc.id}','${data.name}')" data-toggle="modal" data-target=".modal-delete"><i class="fas fa-trash-alt"></i></button></td>
+//       </tr>`
+//       // console.log(`${doc.id} => ${doc.data().name}`);
+//   });
+// });
 
 
 // eliminar users
 const deleteUser = (id,nombre) => {
   modalDelete.innerHTML = `
-  <p>¿usted de hace eliminar eliminar a <b>${nombre}</b> ?</p>
+  <p>¿usted desea eliminar a <b>${nombre}</b> ?</p>
   `
   btnDelete.addEventListener('click', e=> {
     db.collection("clients").doc(id).delete().then(function() {

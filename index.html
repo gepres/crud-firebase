@@ -7,6 +7,10 @@
   <!-- <link rel="stylesheet" href="normalize.css"> -->
   <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
   <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.8.1/css/all.css">
+  <link rel="stylesheet" type="text/css" href="./data-table/datatables.min.css"/>
+
+  <!-- <link rel="stylesheet" href="style.css"> -->
+
   <!-- <link rel="stylesheet" href="./css/style.css"> -->
   <title>CRUD FIREBASE</title>
 </head>
@@ -20,26 +24,29 @@
   </nav>
   <div class="container">
     <div class="row mt-4">
-      <div class="col lg-6">
+      <div class="col-lg-6">
         <div class="card">
           <div class="card-body">
             <div class="card-title">
               <h5>inserte cliente</h5>
             </div>
             <form>
-            <input type="text" id="name" placeholder="inserte nombre" class="form-control">
+            <input type="text" id="name" placeholder="inserte nombre" class="form-control" required>
             <br>
-            <input type="text" id="last" placeholder="inserte apellido" class="form-control">
+            <input type="text" id="last" placeholder="inserte apellido" class="form-control" required>
             <br>
-            <input type="number" id="age" placeholder="inserte edad" class="form-control">
+            <input type="number" id="age" placeholder="inserte edad" class="form-control" required>
+              <!-- <br>
+            <input type="number" id="ageIgv" placeholder="inserte igv" class="form-control" disabled> -->
               <br>
             </form>
+            <div class="notification-add" id="notificationAdd"></div>
             <button class="btn btn-success" onclick="agregar()" id="btn"><i class="fas fa-plus"></i> agregar</button>
           </div>
         </div>
       </div>
-      <div class="col lg-6">
-        <table class="table table-bordered text-center">
+      <div class="col-lg-6">
+        <table class="table table-bordered text-center display" id="example">
           <thead class="thead-dark">
             <tr>
               <th>ID</th>
@@ -112,9 +119,57 @@
   <!-- sctript -->
 
   <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
+  <script src="./data-table/datatables.js"></script>
+  <!-- <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script> -->
   <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>  
 <script src="https://www.gstatic.com/firebasejs/5.9.1/firebase.js"></script>
 <script src="script.js"></script>
+<script>
+
+  
+  
+  $(document).ready(function(){
+    db.collection("clients").onSnapshot((query) => {
+        const arr = []
+        query.forEach((doc) => {
+          const data = doc.data()
+
+          // var name = data.name
+          console.log(data);
+            arr.push({id:doc.id,name:data.name,last:data.last,age:data.age,option:`<button onclick="deleteUser('${doc.id}','${data.name}')" data-toggle="modal" data-target=".modal-delete"><i class="fas fa-trash-alt"></i></button>`})
+            
+            // console.log(JSON.stringify(data));
+          // console.log(doc.id);
+          // console.log(data.name);
+          // console.log(arr);   
+          // var jsonData = arr
+        });
+        console.log(arr);
+        $('#example').dataTable({
+          destroy: true,
+          data: arr,
+          columns: [
+            { data: 'id' },
+            { data: 'name' },
+            {data:'last'},
+            {data:'age'},
+            {data:'option'}
+          ]
+        });
+    });
+  });
+
+
+// $(document).ready(function(){
+//     var jsonData = [{"userID":"1","userName":"name1"},{"userID":"2","userName":"name2"},{"userID":"3","userName":"name3"}];
+//     $('#example').dataTable({
+//         data: jsonData,
+//         columns: [
+//             { data: 'userID' },
+//             { data: 'userName' }
+//         ]
+//     });
+// });
+  </script>
 </body>
 </html>
